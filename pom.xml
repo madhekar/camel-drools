@@ -27,7 +27,7 @@
 
     <groupId>org.apache.camel</groupId>
     <artifactId>camel-drools</artifactId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.8</version>
     <packaging>bundle</packaging>
     <name>Camel :: Drools</name>
 
