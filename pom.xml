@@ -44,7 +44,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/TouK/camel-drools.git</connection>
-        <developerConnection>scm:git:git@github.com:TouK/camel-drools.git</developerConnection>
+        <developerConnection>scm:git:git://github.com/TouK/camel-drools.git</developerConnection>
         <url>https://github.com/TouK/camel-drools</url>
     </scm>
 
