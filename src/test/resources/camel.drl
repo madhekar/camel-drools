@@ -1,0 +1,26 @@
+import org.apache.camel.component.drools.*
+
+global org.apache.camel.component.drools.CamelDroolsHelper helper
+
+rule "A"
+    when
+        A(a == "a")
+    then
+        helper.set("A");        
+end
+
+rule "AB"
+    when
+        A(a == "d")
+    then
+        insert(new A("b"));
+        insert(new A("c"));        
+end
+
+rule "B"
+    when
+        A(a == "b")
+        A(a == "c")
+    then
+        helper.set("B");
+end

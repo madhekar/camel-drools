@@ -1,0 +1,19 @@
+import org.apache.camel.component.drools.*
+
+global java.util.List s;
+
+declare A
+    @role( event )
+	@expires (400d)
+end
+
+rule first 
+when
+	exists (A(a == "a"))
+	$last : A() 
+	not (A(timestamp > $last.timestamp))
+	not (A(this after[1s,10D] $last))
+then 
+	s.add("one"+$last.getA());
+end
+

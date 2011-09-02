@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010 TouK.pl
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+    <bean id="sessionCache" class="org.apache.camel.component.drools.impl.SessionCache" destroy-method="close"
+          p:sessionDAO-ref="sessionDAO" p:sessionMaker-ref="sessionMaker"/>
+
+    <bean id="sessionMaker" class="org.apache.camel.component.drools.impl.SessionMakerImpl"
+          p:sessionDAO-ref="sessionDAO" p:initializer-ref="sessionInitializer"
+          p:sessionConfiguration-ref="sessionConfiguration" p:sessionSanitizers-ref="sessionSanitizers"
+          p:marshallingStrategyFactory-ref="marshallingStrategyFactory"/>
+
+    <bean id="sessionInitializer" class="org.apache.camel.component.drools.impl.DefaultSessionInitializer"/>
+
+    <util:list id="sessionSanitizers">
+        <ref bean="sessionSanitizer"/>
+    </util:list>
+
+    <bean id="sessionSanitizer" class="org.apache.camel.component.drools.impl.SessionSanitizer" 
+        p:sessionDAO-ref="sessionDAO" p:assembler-ref="databaseObjectWrapperAssembler"/>
+
+    <bean id="marshallingStrategyFactory" class="org.apache.camel.component.drools.persistence.DefaultMarshallingStrategyFactory"
+        p:sessionDAO-ref="sessionDAO" p:assembler-ref="databaseObjectWrapperAssembler"/>
+
+    <bean id="sessionConfiguration" class="org.apache.camel.component.drools.impl.KnowledgeSessionConfiguration"/>
+    
+</beans>

@@ -1,0 +1,21 @@
+import org.apache.camel.component.drools.stateful.model.*
+
+global org.apache.camel.component.drools.CamelDroolsHelper helper
+
+declare TaskCreated
+    @role( event )
+    @expires( 365d )
+end
+
+declare TaskCompleted
+    @role( event )
+    @expires( 365d )
+end
+
+rule "Task not completed after 10 days"
+    when
+       $t : TaskCreated()
+       not(TaskCompleted(name==$t.name, this after [-* ,10d] $t))
+    then
+        helper.send("direct:escalation", $t.getName());
+end

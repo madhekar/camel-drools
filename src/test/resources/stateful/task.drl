@@ -1,0 +1,29 @@
+import org.apache.camel.component.drools.stateful.model.*
+
+global org.apache.camel.component.drools.CamelDroolsHelper helper
+
+rule "init"
+salience 100
+    when
+        $s : State(name=="start")
+    then
+        insert(new Task("Task1"));
+        insert(new Task("Task2"));
+        retract($s);
+end
+
+rule "all tasks completed"
+    when
+        not(exists Task(completed==false))
+        not(exists State(name=="end"))
+    then
+        insert(new Task("Task3"));
+end
+
+rule "Task3 completed"
+    when 
+        Task(name=="Task3", completed==true)
+    then
+        insert(new State("end"));
+        helper.send("direct:completed", "completed");
+end     

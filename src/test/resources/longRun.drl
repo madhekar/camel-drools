@@ -1,0 +1,30 @@
+import org.apache.camel.component.drools.*
+
+global java.util.List list 
+
+declare A 
+	@role(event)
+end
+
+declare B 
+    @role(event)
+    @expires(365d)
+    @duration(duration)
+end
+
+
+rule "A"
+	when
+		$a : A(a == "a")
+		not A(a == "b", this before [-5m,5m] $a)
+	then
+		list.add("a");
+end
+
+rule "B no A"
+    when
+        $b: B()
+        not A(this after [-0s, 0s] $b)
+    then
+        list.add("c");
+end
